@@ -15,6 +15,11 @@ class CarHandlerSpec extends FunSuite {
   val set1 = CarSet(List(car1, car3, car4))
   val set2 = CarSet(List(car1, car3))
 
+  test("toStringEquality") {
+    assert(n1.toString == "A001AA96")
+    assert(n3.toString == "A002AB98")
+  }
+
   test("numbersEquality") {
     assert(n1 == n2)
     assert(n1 != n3)

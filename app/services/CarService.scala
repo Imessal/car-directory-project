@@ -1,18 +1,23 @@
 package services
+import com.google.inject.Inject
 import models.CarHandler._
 
-class  CarService {
-  val cars = CarSet(List())
+import scala.concurrent.Future
 
-  def addCar(car: Car): CarSet = {
+class  CarService @Inject() (cars: Cars) {
+  def addCar(car: Car): Future[String] = {
     cars.add(car)
   }
 
-  def deleteCar(number: String): CarSet = {
+  def deleteCar(number: String): Future[Int] = {
     cars.delete(number)
   }
 
-  def listAllCars(): CarSet = {
-    cars.listAll()
+  def findCar(number: String): Future[Option[Car]] = {
+    cars.get(number)
+  }
+
+  def listAllCars(): Future[Seq[Car]] = {
+    cars.listAll
   }
 }

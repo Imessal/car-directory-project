@@ -1,7 +1,8 @@
 CREATE TABLE `carDb`.`car` (
-                                      `number` VARCHAR(10) PRIMARY KEY,
-                                      `brand` TEXT NOT NULL,
-                                      `model` TEXT NOT NULL,
-                                      `color` TEXT NOT NULL,
-                                      `year` INTEGER NOT NULL
+                               `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                               `number` VARCHAR(40) NOT NULL,
+                               `brand` VARCHAR(40) NOT NULL,
+                               `model` VARCHAR(40) NOT NULL,
+                               `color` VARCHAR(40) NOT NULL,
+                               `year` VARCHAR(40) NOT NULL
 )

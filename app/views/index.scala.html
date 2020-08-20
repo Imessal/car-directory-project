@@ -1,5 +1,106 @@
-@(carForm: Form[models.CarHandler.CarFormData], cars: CarHandler.CarSet)(implicit request: RequestHeader)
+@(carForm: Form[models.CarHandler.CarFormData], cars: Seq[models.CarHandler.Car])(implicit request: RequestHeader)
 
-@main("Справочник автообилей") {
-  <h1>Welcome to Play!</h1>
+@main("Car directory") {
+
+  <form action='@routes.HomeController.addCar()' method="post">
+    <fieldset>
+      <legend>Car registration</legend>
+      <ul>
+        <li>
+          <label for="number">Number:</label>
+          <input type="text" id="number" name="number" placeholder="A000AA96" required>
+        </li>
+        <li>
+          <label for="brand">Mark:</label>
+          <input type="text" id="brand" name="brand" placeholder="Bentley" required>
+        </li>
+        <li>
+          <label for="model">Model:</label>
+          <input type="text" id="model" name="model" placeholder="Continental" required>
+        </li>
+        <li>
+          <label for="color">Color:</label>
+          <input type="text" id="color" name="color" placeholder="Black" required>
+        </li>
+        <li>
+          <label for="number">Year:</label>
+          <input type="month" id="year" name="year" placeholder="2007" required>
+        </li>
+        <li class="button">
+          <div class="send_button">
+            <button type="submit">Register!</button>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  </form>
+
+<div class="car-displqy" >
+      <fieldset>
+        <legend align="center"><h3>Registered Cars</h3></legend>
+        <table cellspacing="20">
+          <tr>
+            <th>number</th>
+            <th>brand</th>
+            <th>model</th>
+            <th>color</th>
+            <th>year</th>
+          </tr>
+          @for(car <- cars){
+            <tr>
+              <td>@car.number</td>
+              <td>@car.brand</td>
+              <td>@car.model</td>
+              <td>@car.color</td>
+              <td>@car.year</td>
+              <td><a href="@routes.HomeController.deleteCar(car.number)">delete</a></td>
+            </tr>
+          }
+        </table>
+      </fieldset>
+    </div>
+
+
+  <style>
+    form {
+      margin: auto;
+      width: 370px;
+      padding: 1em;
+      font-size: 20px
+    }
+    legend {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    ul {
+      list-style: none;
+      position: relative;
+      right: 30px;
+    }
+    label {
+      display: inline-block;
+      padding-right: 10px;
+      width: 60px;
+      text-align: right;
+    }
+
+    .send_button {
+      padding-top: 10px;
+      padding-left: 15px;
+    }
+    button {
+      padding: 8px 32px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      font-size: 16px;
+    }
+    input {
+      font-size: 16px
+    }
+    input:focus, textarea:focus {
+      border-color: #000;
+    }
+
+</style>
 }

@@ -4,31 +4,43 @@
 
   <form action='@routes.HomeController.addCar()' method="post">
     <fieldset>
-      <legend>Car registration</legend>
+      <legend>Регистрация авто</legend>
       <ul>
         <li>
-          <label for="number">Number:</label>
-          <input type="text" id="number" name="number" placeholder="A000AA96" required>
+          <label for="number">Номер:</label>
+          <input type="text" id="number" name="number" placeholder="A000AA96"
+            required pattern="^[АВЕКМНОРСТУХABEKMHOPCTYXA]{1}[0-9]{3}[АВЕКМНОРСТУХABEKMHOPCTYXA]{2}\d{2,3}$"
+            oninvalid="this.setCustomValidity('Пожалуйста, введите номер автомобиля в формате &laquo;A000AA00&raquo;')"
+            oninput="this.setCustomValidity('')" />
+          <span class="error" aria-live="polite"></span>
         </li>
         <li>
-          <label for="brand">Mark:</label>
-          <input type="text" id="brand" name="brand" placeholder="Bentley" required>
+          <label for="brand">Марка:</label>
+          <input type="text" id="brand" name="brand" placeholder="Bentley" required pattern="[A-Za-z]*"
+            oninvalid="this.setCustomValidity('Пожалуйста, введите корректную марку автомобиля')"
+            oninput="this.setCustomValidity('')" />
         </li>
         <li>
-          <label for="model">Model:</label>
+          <label for="model">Модель:</label>
           <input type="text" id="model" name="model" placeholder="Continental" required>
         </li>
         <li>
-          <label for="color">Color:</label>
-          <input type="text" id="color" name="color" placeholder="Black" required>
+          <label for="color">Цвет:</label>
+          <input type="text" id="color" name="color" placeholder="Black" required pattern="[A-Za-z]*"
+            oninvalid="this.setCustomValidity('Пожалуйста, введите корректный цвет на латинице')"
+            oninput="this.setCustomValidity('')"
+          />
         </li>
         <li>
-          <label for="number">Year:</label>
-          <input type="month" id="year" name="year" placeholder="2007" required>
+          <label for="number">Год:</label>
+          <input type="month" id="year" name="year" placeholder="2007" required pattern="^(19|20)\d{2}$"
+            oninvalid="this.setCustomValidity('Пожалуйста, введите корректный год')"
+            oninput="this.setCustomValidity('')"
+          />
         </li>
         <li class="button">
           <div class="send_button">
-            <button type="submit">Register!</button>
+            <button type="submit">Зарегистрировать!</button>
           </div>
         </li>
       </ul>
@@ -37,25 +49,31 @@
 
 <div class="car-displqy" >
       <fieldset>
-        <legend align="center"><h3>Registered Cars</h3></legend>
-        <table cellspacing="20">
-          <tr>
-            <th>number</th>
-            <th>brand</th>
-            <th>model</th>
-            <th>color</th>
-            <th>year</th>
-          </tr>
-          @for(car <- cars){
+        <legend align="center"><h3>База авто</h3></legend>
+        <table cellspacing="20" id="carTable">
+          <thead>
             <tr>
-              <td>@car.number</td>
-              <td>@car.brand</td>
-              <td>@car.model</td>
-              <td>@car.color</td>
-              <td>@car.year</td>
-              <td><a href="@routes.HomeController.deleteCar(car.number)">delete</a></td>
+              <th onclick="sortTable(0)">Номер</th>
+              <th onclick="sortTable(1)">Марка</th>
+              <th onclick="sortTable(2)">Модель</th>
+              <th onclick="sortTable(3)">Цвет</th>
+              <th onclick="sortTable(4)">Год</th>
+              <th onclick="sortTable(5)">Добавлено</th>
             </tr>
-          }
+          </thead>
+          <tbody>
+            @for(car <- cars){
+              <tr>
+                <td>@car.number</td>
+                <td>@car.brand</td>
+                <td>@car.model</td>
+                <td>@car.color</td>
+                <td>@car.year</td>
+                <td>@car.added</td>
+                <td><a href="@routes.HomeController.deleteCar(car.number)">Удалить</a></td>
+              </tr>
+            }
+          </tbody>
         </table>
       </fieldset>
     </div>
@@ -68,15 +86,18 @@
       padding: 1em;
       font-size: 20px
     }
+
     legend {
       font-size: 24px;
       font-weight: bold;
     }
+
     ul {
       list-style: none;
       position: relative;
       right: 30px;
     }
+
     label {
       display: inline-block;
       padding-right: 10px;
@@ -88,6 +109,7 @@
       padding-top: 10px;
       padding-left: 15px;
     }
+
     button {
       padding: 8px 32px;
       margin-left: auto;
@@ -95,12 +117,61 @@
       display: block;
       font-size: 16px;
     }
+
     input {
-      font-size: 16px
+      font-size: 16px;
     }
-    input:focus, textarea:focus {
-      border-color: #000;
+
+    input:valid {
+      border: 2px solid #00DC00;
+    }
+
+    input:invalid:focus {
+      border: 2px solid red;
+    }
+
+    input:focus:invalid {
+      outline: none;
     }
 
 </style>
+
+<script>
+  function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
+  table = document.getElementById("carTable");
+  switching = true;
+  dir = "asc";
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < (rows.length - 1); i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      if (dir === "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir === "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      switchCount ++;
+    } else {
+      if (switchCount === 0 && dir === "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
 }

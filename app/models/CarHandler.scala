@@ -26,7 +26,7 @@ object CarHandler {
     }
   }
 
-  case class Car(id: Int, number: String, brand: String, model: String, color: String, year: Int)
+  case class Car(id: Int, number: String, brand: String, model: String, color: String, year: Int, added: String)
   case class CarFormData(number: String, brand: String, model: String, color: String, year: Int)
 
   class CarFormer(tag: Tag) extends Table[Car](tag, "car") {
@@ -36,8 +36,9 @@ object CarHandler {
     def model = column[String]("model")
     def color = column[String]("color")
     def year = column[Int]("year")
+    def added = column[String]("added")
 
-    override def * = (id, number, brand, model, color, year) <> (Car.tupled, Car.unapply)
+    override def * = (id, number, brand, model, color, year, added) <> (Car.tupled, Car.unapply)
   }
 
   object CarForm {

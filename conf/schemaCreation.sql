@@ -4,6 +4,8 @@ CREATE TABLE `carDb`.`car` (
                                `brand` VARCHAR(40) NOT NULL,
                                `model` VARCHAR(40) NOT NULL,
                                `color` VARCHAR(40) NOT NULL,
-                               `year` VARCHAR(40) NOT NULL,
+                               `horse_forces` INTEGER NOT NULL,
+                               `owners` INTEGER NOT NULL,
+                               `year` INTEGER NOT NULL,
                                `added` VARCHAR(40) NOT NULL
 )

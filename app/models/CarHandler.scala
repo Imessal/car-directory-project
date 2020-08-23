@@ -26,8 +26,10 @@ object CarHandler {
     }
   }
 
-  case class Car(id: Int, number: String, brand: String, model: String, color: String, year: Int, added: String)
-  case class CarFormData(number: String, brand: String, model: String, color: String, year: Int)
+  case class Car(id: Int, number: String, brand: String, model: String, color: String, horse_forces: Int,
+                 owners_count: Int, year: Int, added: String)
+  case class CarFormData(number: String, brand: String, model: String, color: String, horse_forces: Int,
+                         owners_count: Int, year: Int)
 
   class CarFormer(tag: Tag) extends Table[Car](tag, "car") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
@@ -35,10 +37,13 @@ object CarHandler {
     def brand = column[String]("brand")
     def model = column[String]("model")
     def color = column[String]("color")
+    def horse_forces = column[Int]("horse_forces")
+    def owners_count = column[Int]("owners")
     def year = column[Int]("year")
     def added = column[String]("added")
 
-    override def * = (id, number, brand, model, color, year, added) <> (Car.tupled, Car.unapply)
+    override def * =
+      (id, number, brand, model, color, horse_forces, owners_count, year, added) <> (Car.tupled, Car.unapply)
   }
 
   object CarForm {
@@ -48,6 +53,8 @@ object CarHandler {
         "brand" -> nonEmptyText,
         "model" -> nonEmptyText,
         "color" -> nonEmptyText,
+        "horse_forces" -> number,
+        "owners_count" -> number,
         "year" -> number
       )(CarFormData.apply)(CarFormData.unapply)
     )
@@ -60,7 +67,7 @@ object CarHandler {
 
     def add(car: Car): Future[String] = {
       dbConfig.db.run(cars += car).map(res => "Car added").recover {
-        case ex: Exception => ex.getCause.getMessage
+        case ex: Exception => ex.getMessage
       }
     }
 

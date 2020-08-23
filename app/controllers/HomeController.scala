@@ -23,11 +23,14 @@ class HomeController @Inject()(controllerComponents: ControllerComponents,
   def addCar(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     CarForm.form.bindFromRequest.fold(
       errorForm => {
-        logger.warn(s"Form submission with error: ${errorForm.errors}")
+        logger.warn(s"Error: ${errorForm.errors}")
         Future.successful(Ok(views.html.index(errorForm, Seq.empty[Car])))
       },
       data => {
-        val newCar = Car(0, data.number, data.brand, data.model, data.color, data.year, Timer.now())
+        if (data.toString == "bad number") BadRequest(views.html.index(CarForm.form, Seq.empty[Car]))
+        val newCar = Car(0, data.number, data.brand, data.model, data.color,
+          data.horse_forces, data.owners_count, data.year, Timer.now())
+
         carService.addCar(newCar) map { res =>
           Redirect(routes.HomeController.index())}
       }
@@ -54,4 +57,8 @@ object Timer {
 
     day + " " + time
   }
+}
+
+object StatCollector {
+
 }

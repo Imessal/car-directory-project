@@ -32,11 +32,32 @@
           />
         </li>
         <li>
-          <label for="number">Год:</label>
-          <input type="month" id="year" name="year" placeholder="2007" required pattern="^(19|20)\d{2}$"
+          <label for="year">Год:</label>
+          <input type="text" id="year" name="year" placeholder="2007" required pattern="^(19|20)\d{2}$"
             oninvalid="this.setCustomValidity('Пожалуйста, введите корректный год')"
             oninput="this.setCustomValidity('')"
           />
+        </li>
+        <li>
+          <label for="horse_forces">Кол-во л.с.:</label>
+          <input type="text" id="horse_forces" name="horse_forces" min="0" max="500" required
+            oninvalid="this.setCustomValidity('Пожалуйста, введите количество лошадиных сил')"
+            oninput="this.setCustomValidity('')"
+          />
+        </li>
+        <li>
+          <label class="owners_count">Владельцев:</label>
+@*          <label class="owners_count">*@
+          <div id="owners">
+            <input type="radio" name="owners_count" value="1"> 1<Br>
+@*          </label>*@
+@*          <label class="owners_count">*@
+            <input type="radio" name="owners_count" value="2"> 2<Br>
+@*          </label>*@
+@*          <label class="owners_count">*@
+            <input type="radio" name="owners_count" value="3"> 3 и более<Br>
+@*          </label>*@
+          </div>
         </li>
         <li class="button">
           <div class="send_button">
@@ -47,9 +68,9 @@
     </fieldset>
   </form>
 
-<div class="car-displqy" >
+<div class="car-display" >
       <fieldset>
-        <legend align="center"><h3>База авто</h3></legend>
+        <legend align="center">База авто</legend>
         <table cellspacing="20" id="carTable">
           <thead>
             <tr>
@@ -57,8 +78,10 @@
               <th onclick="sortTable(1)">Марка</th>
               <th onclick="sortTable(2)">Модель</th>
               <th onclick="sortTable(3)">Цвет</th>
-              <th onclick="sortTable(4)">Год</th>
-              <th onclick="sortTable(5)">Добавлено</th>
+              <th onclick="sortTable(4)">Количество л. с.</th>
+              <th onclick="sortTable(5)">Владельцев</th>
+              <th onclick="sortTable(6)">Год</th>
+              <th onclick="sortTable(7)">Добавлено</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +91,8 @@
                 <td>@car.brand</td>
                 <td>@car.model</td>
                 <td>@car.color</td>
+                <td>@car.horse_forces</td>
+                <td>@car.owners_count</td>
                 <td>@car.year</td>
                 <td>@car.added</td>
                 <td><a href="@routes.HomeController.deleteCar(car.number)">Удалить</a></td>
@@ -77,12 +102,12 @@
         </table>
       </fieldset>
     </div>
-
+<input type="button" id="btnGetCount" value="Статистика" onclick = "CountCars()" />
 
   <style>
     form {
       margin: auto;
-      width: 370px;
+      width: 500px;
       padding: 1em;
       font-size: 20px
     }
@@ -101,7 +126,7 @@
     label {
       display: inline-block;
       padding-right: 10px;
-      width: 60px;
+      width: 100px;
       text-align: right;
     }
 
@@ -127,16 +152,25 @@
     }
 
     input:invalid:focus {
-      border: 2px solid red;
+      border: 2px solid #00B3FF;
     }
 
     input:focus:invalid {
       outline: none;
     }
 
+    /*.owners_count {*/
+    /*float: right;*/
+    /*display: inline;*/
+    /*margin-left: 3em;*/
+    /*}*/
+
+    .owners_count input {
+    }
+
 </style>
 
-<script>
+<script type="text/javascript">
   function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
   table = document.getElementById("carTable");
@@ -173,5 +207,19 @@
     }
   }
 }
+
+  function CountCars() {
+    var carCount = 0;
+    var total = 0;
+    var table = document.getElementById("carTable");
+    var rows = table.getElementsByTagName("tr");
+    for (var i = 0; i < rows.length; i++) {
+      if(rows[i].getElementsByTagName("td").length > 0) {
+        carCount ++;
+      }
+    }
+    var message = "Всего зарегистрировано автомобилей: " + carCount;
+    alert(message)
+  }
 </script>
 }

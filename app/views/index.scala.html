@@ -1,100 +1,50 @@
 @(carForm: Form[models.CarHandler.CarFormData], cars: Seq[models.CarHandler.Car])(implicit request: RequestHeader)
 
 @main("Car directory") {
-  <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
-  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-  <div id="car_form" class="car-display">
-    <form action='@routes.HomeController.addCar()' method="post">
-      <fieldset>
-        <legend>Регистрация авто</legend>
-        <ul>
-          <li>
-            <label for="number" class="input_field">Номер:</label>
-            <input type="text" id="number" name="number" placeholder="A000AA96"
-              required pattern="^[АВЕКМНОРСТУХABEKMHOPCTYXA]{1}[0-9]{3}[АВЕКМНОРСТУХABEKMHOPCTYXA]{2}\d{2,3}$"
-              oninvalid="this.setCustomValidity('Пожалуйста, введите номер автомобиля в формате &laquo;A000AA00&raquo;')"
-              oninput="this.setCustomValidity('')" />
-            <span class="error" aria-live="polite"></span>
-          </li>
-          <li>
-            <label for="brand" class="input_field">Марка:</label>
-            <input type="text" id="brand" name="brand" placeholder="Bentley" required pattern="[A-Za-z]*"
-              oninvalid="this.setCustomValidity('Пожалуйста, введите корректную марку автомобиля')"
-              oninput="this.setCustomValidity('')" />
-          </li>
-          <li>
-            <label for="model" class="input_field">Модель:</label>
-            <input type="text" id="model" name="model" placeholder="Continental" required>
-          </li>
-          <li>
-            <label for="color" class="input_field">Цвет:</label>
-            <input type="text" id="color" name="color" placeholder="Black" required pattern="[A-Za-z]*"
-              oninvalid="this.setCustomValidity('Пожалуйста, введите корректный цвет на латинице')"
-              oninput="this.setCustomValidity('')"
+    <body id="table_body">
+        <div class="control-buttons">
+            <input type="button" value="Новый" id="addButton"
+            onclick="window.open('register.scala.html',
+                    'newwindow',
+                    'width=400,height=350,resizable=no');
+            return false;"
             />
-          </li>
-          <li>
-            <label for="horse_forces" class="input_field">Кол-во л.с.:</label>
-            <input type="text" id="horse_forces" name="horse_forces" placeholder="120" min="0" max="500" required
-            oninvalid="this.setCustomValidity('Пожалуйста, введите количество лошадиных сил')"
-            oninput="this.setCustomValidity('')"
-            />
-          </li>
-          <li>
-            <label for="year" class="input_field">Год:</label>
-            <input type="text" id="year" name="year" placeholder="2007" required pattern="^(19|20)\d{2}$"
-              oninvalid="this.setCustomValidity('Пожалуйста, введите корректный год')"
-              oninput="this.setCustomValidity('')"
-            />
-          </li>
-          <li>
-            <div id="radio" style="display: inline-block; text-align: right;">
-              <label class="owners_count" style="float: left">Владельцев:</label>
-              <label><input type="radio" name="owners_count" value="1"> 1 </label>
-              <label><input type="radio" name="owners_count" value="2"> 2 </label>
-              <label><input type="radio" name="owners_count" value="3"> 3 и более</label>
-            </div>
-          </li>
-          <li class="button">
-            <div class="send_button">
-              <button type="submit">Зарегистрировать!</button>
-            </div>
-          </li>
-        </ul>
-      </fieldset>
-    </form>
-  </div>
-
-<div class="car-display" >
-  <table id="carTable">
-    <thead>
-      <tr>
-        <th onclick="sortTable(0)">Номер</th>
-        <th onclick="sortTable(1)">Марка</th>
-        <th onclick="sortTable(2)">Модель</th>
-        <th onclick="sortTable(3)">Цвет</th>
-        <th onclick="sortTable(4)">Количество л. с.</th>
-        <th onclick="sortTable(5)">Владельцев</th>
-        <th onclick="sortTable(6)">Год</th>
-        <th onclick="sortTable(7)">Добавлено</th>
-      </tr>
-    </thead>
-    <tbody>
-    @for(car <- cars){
-      <tr>
-        <td>@car.number</td>
-        <td>@car.brand</td>
-        <td>@car.model</td>
-        <td>@car.color</td>
-        <td style="text-align: center">@car.horse_forces</td>
-        <td style="text-align: center">@car.owners_count</td>
-        <td>@car.year</td>
-        <td>@car.added</td>
-        <td><a href="@routes.HomeController.deleteCar(car.number)">Удалить</a></td>
-      </tr>
-    }
-    </tbody>
-  </table>
-</div>
-<input type="button" id="btnGetCount" value="Статистика" onclick = "getStat()" />
+            <input type="button" id="btnGetCount" value="Статистика" onclick = "getStat()" />
+        </div>
+        <div class="car-display" >
+          <table id="carTable">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">Номер</th>
+                <th onclick="sortTable(1)">Марка</th>
+                <th onclick="sortTable(2)">Модель</th>
+                <th onclick="sortTable(3)">Цвет</th>
+                <th onclick="sortTable(4)">Количество л. с.</th>
+                <th onclick="sortTable(5)">Владельцев</th>
+                <th onclick="sortTable(6)">Год</th>
+                <th onclick="sortTable(7)">Добавлено</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+            @for(car <- cars){
+              <tr>
+                <td>@car.number</td>
+                <td>@car.brand</td>
+                <td>@car.model</td>
+                <td>@car.color</td>
+                <td style="text-align: center">@car.horse_forces</td>
+                <td style="text-align: center">@car.owners_count</td>
+                <td>@car.year</td>
+                <td>@car.added</td>
+                <td><a href="@routes.HomeController.deleteCar(car.number)">
+                    <img src="@routes.Assets.versioned("images/cross.png")" width="20" height="20">
+                    </a>
+                </td>
+              </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+    </body>
 }

@@ -20,6 +20,12 @@ class HomeController @Inject()(controllerComponents: ControllerComponents,
     }
   }
 
+  def register(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    carService.listAllCars() map { cars =>
+      Ok(views.html.register(CarForm.form))
+    }
+  }
+
   def addCar(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     CarForm.form.bindFromRequest.fold(
       errorForm => {
@@ -57,8 +63,4 @@ object Timer {
 
     day + " " + time
   }
-}
-
-object StatCollector {
-
 }

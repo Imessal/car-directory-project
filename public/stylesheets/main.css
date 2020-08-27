@@ -1,13 +1,56 @@
+html {
+    width: 100%;
+}
+
+#table_body {
+    background-image: url("../images/cars_background.png");
+    background-size: 100%;
+}
+
+.control-buttons {
+    text-align: center;
+}
+
 form {
     /*margin: auto;*/
-    width: 400px;
     font-size: 20px
+}
+
+#car_form {
+    width: 400px;
+    max-width: 400px;
+    height: 350px;
+    max-height: 350px;
+    display: inline-block;
+    font-family: sans;
 }
 
 #radio {
     margin: auto;
     width: 300px;
 
+}
+
+#addButton {
+    background-color: mediumpurple;
+    width: 619px;
+    color: white;
+    border: none;
+    display: inline-block;
+    font-size: 24px;
+    padding: 16px 32px;
+
+}
+
+#btnGetCount {
+    background-color: mediumpurple;
+    color: white;
+    width: 292px;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    font-size: 24px;
+    padding: 16px 32px;
 }
 
 legend {
@@ -59,7 +102,7 @@ input:focus:invalid {
 
 table{
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 0 auto;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
@@ -67,7 +110,7 @@ table{
 }
 
 table thead tr {
-    background-color: #58CBB0;
+    background-color: mediumpurple;
     color: #ffffff;
     text-align: left;
 }
@@ -85,13 +128,10 @@ table tbody tr:nth-of-type(even) {
 }
 
 table tbody tr:last-of-type {
-    border-bottom: 2px solid #58CBB0;
+    border-bottom: 2px solid mediumpurple;
 }
 
 table tbody tr.active-row {
     font-weight: bold;
-    color: #58CBB0;
-}
-
-div.car-display {
+    color: mediumpurple;
 }

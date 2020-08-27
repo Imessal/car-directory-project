@@ -7,6 +7,7 @@
 GET     /                           controllers.HomeController.index
 POST    /add                        controllers.HomeController.addCar
 GET     /delete/:number             controllers.HomeController.deleteCar(number : String)
+GET     /register.scala.html        controllers.HomeController.register
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

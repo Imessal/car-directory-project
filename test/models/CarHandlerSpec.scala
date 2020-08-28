@@ -1,5 +1,5 @@
 package models
-import models.CarHandler.{Number, Car, CarSet}
+import models.CarHandler.{Number, Car}
 import org.scalatest.FunSuite
 
 class CarHandlerSpec extends FunSuite {
@@ -7,13 +7,11 @@ class CarHandlerSpec extends FunSuite {
   val n2 = Number("AAA", "001", 96)
   val n3 = Number("AAB", "002", 98)
 
-  val car1 = Car(n1, "Bentley", "Continental", "Black", 2002)
-  val car2 = Car(n2, "Bentley", "Continental", "Black", 2002)
-  val car3 = Car(n3, "Volkswagen", "Tiguan", "White", 2014)
-  val car4 = Car(Number("ABC", "322", 99), "Renault", "Logan", "Silver", 2005)
+  val car1 = Car(0, n1.toString, "Bentley", "Continental", "Black", 200, 1, 2015, "now")
+  val car2 = Car(0, n2.toString, "Bentley", "Continental", "Black", 200, 1, 2015, "now")
+  val car3 = Car(1, n3.toString, "Volkswagen", "Tiguan", "White", 200, 2, 2014, "later")
+  val car4 = Car(2, Number("ABC", "322", 99).toString, "Renault", "Logan", "Silver", 150, 3, 2005, "sometime")
 
-  val set1 = CarSet(List(car1, car3, car4))
-  val set2 = CarSet(List(car1, car3))
 
   test("toStringEquality") {
     assert(n1.toString == "A001AA96")
@@ -30,11 +28,5 @@ class CarHandlerSpec extends FunSuite {
     assert(car1 == car2)
     assert(car1 != car3)
     assert(car2 != car4)
-  }
-
-  test("carSetEquality") {
-    assert(set1 == set2.add(car4))
-    assert(set1.listAll() == set2.add(car4).listAll())
-    assert(set1.delete(n1.toString) == CarSet(List(car3, car4)))
   }
 }

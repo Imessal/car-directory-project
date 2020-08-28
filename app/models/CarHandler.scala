@@ -67,7 +67,7 @@ object CarHandler {
 
     def add(car: Car): Future[String] = {
       dbConfig.db.run(cars += car).map(res => "Car added").recover {
-        case ex: Exception => ex.getMessage
+        case ex: Exception => "bad number"
       }
     }
 
